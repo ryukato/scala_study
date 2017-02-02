@@ -128,3 +128,5 @@ Monads에 대한 자세한 설명은 아래의 동영상을 통해 확인 할 �
 ### References
 * [functional-programming-pure-functions/](https://www.sitepoint.com/functional-programming-pure-functions/)
 * [Functional-Programming-Concepts-Idioms-and-Philosophy/](https://hkupty.github.io/2016/Functional-Programming-Concepts-Idioms-and-Philosophy/)
+* [referential-transparency-and-the-true-meaning-of](http://monospacedmonologues.com/post/138204666541/referential-transparency-and-the-true-meaning-of)
+* [functional_programming learning](https://www.tutorialspoint.com/functional_programming/index.htm)
