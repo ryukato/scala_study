@@ -79,3 +79,90 @@ Arg value[0] = Hello
 Arg value[1] = Scala
 Arg value[2] = Python
 ```
+
+## Recursion (재귀)
+재귀 함수는 함수형 프로그래밍에서 많이 사용이 된다. 재귀 함수는 자신을 반복해서 여러번 호출 하는 것을 의미한다. 
+아래의 factorial의 예제 코드가 재귀 함수의 좋은 예가 된다.
+
+```
+object Demo extends App{
+  def factorial(n: BigInt): BigInt = {
+    if(n <= 1){
+      1
+    }else{
+      n*factorial(n-1)
+    }
+  }
+
+  for(i <- 1 to 10){
+    println("Fatorial of " + i + ": = " + factorial(i))
+  }
+}
+
+```
+
+###### output
+
+```
+Fatorial of 1: = 1
+Fatorial of 2: = 2
+Fatorial of 3: = 6
+Fatorial of 4: = 24
+Fatorial of 5: = 120
+Fatorial of 6: = 720
+Fatorial of 7: = 5040
+Fatorial of 8: = 40320
+Fatorial of 9: = 362880
+Fatorial of 10: = 3628800
+```
+
+일반적으로 함수를 호출하게되면 호출된 함수는 call stack에 추가가 된다. call stack을 통해 지역변수(local variable)을 사용하고 따라 갈 수 있다. 하지만 이 call stack의 사이즈는 제한적이다. 그렇기때문에 잘못 작성된 재귀를 실행할때 stack-over-flow라는 에러를 보게 되는 것이다. 
+
+### Head Recursion
+head recursion은 재귀적인 구조내에서 자신의 호출해서 반환된 값을 가지고 추가적인 계산이나 다른 작업을 수행하는 형태를 말한다. 
+### Tail Recursion
+tail recursion은 모든 계산 혹은 다른 작업은 자기 자신을 호출하기 이전에 모두 수행하고 자시 자신은 맨 마지막에 호출하는 형태를 말한다. tail recursion의 경우, 결론적으로 말하면 call stack의 stack frame의 사용을 거의 사용하지 않는다. 왜냐면 이미 지역변수의 계산을 마친 상태고 동일한 함수를 재귀적으로 호출하기 때문이다. 따라서 추적할 로컬 변수도 없고 동일한 함수를 다시 호출하기때문에 새로운 stack frame을 사용할 필요가 없어서 현재의 stack frame을 계속 재 사용하게 된다.
+
+아래의 예제는 tail recursion 형태의 함수이다.
+
+```
+object Demo extends App{
+  def listSum(list: List[Int]): Int = {
+    def listSumHelper(list: List[Int], sum: Int): Int  = {
+      if(list == Nil) sum
+      else listSumHelper(list.tail, sum + list.head)
+    }
+    listSumHelper(list, 0)
+  }
+
+  var list1 = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+  println(listSum(list1))
+}
+
+```
+
+작성한 함수가 tail recursive인지 아닌지 확인하고자 한다면, @tailrec annotation을 붙여보면 된다. 아래처럼.
+
+```
+object Demo extends App{
+  def listSum(list: List[Int]): Int = {
+    @tailrec
+    def listSumHelper(list: List[Int], sum: Int): Int  = {
+      if(list == Nil) sum
+      else listSumHelper(list.tail, sum + list.head)
+    }
+    listSumHelper(list, 0)
+  }
+
+  var list1 = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+  println(listSum(list1))
+}
+
+```
+
+tail recursive하지 않은 경우는 아래와 같은 compile에러를 보게 될 것이다. 
+
+```
+could not optimize @tailrec annotated method [메서드명]: it
+contains a recursive call not in tail position
+```
